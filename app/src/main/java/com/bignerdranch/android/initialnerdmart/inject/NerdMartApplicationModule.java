@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.bignerdranch.android.initialnerdmart.model.DataStore;
 import com.bignerdranch.android.initialnerdmart.model.service.NerdMartServiceManager;
+import com.bignerdranch.android.initialnerdmart.viewmodel.NerdMartViewModel;
 import com.bignerdranch.android.nerdmartservice.service.NerdMartService;
 import com.bignerdranch.android.nerdmartservice.service.NerdMartServiceInterface;
 
@@ -36,5 +37,11 @@ public class NerdMartApplicationModule {
     NerdMartServiceManager providesNerdMartServiceManager(
             NerdMartServiceInterface serviceInterface, DataStore dataStore) {
         return new NerdMartServiceManager(serviceInterface, dataStore);
+    }
+
+    @Provides
+    NerdMartViewModel providesNerdMartViewModel(DataStore dataStore) {
+        return new NerdMartViewModel(mApplicationContext,
+                dataStore.getCachedCart(), dataStore.getCachedUser());
     }
 }

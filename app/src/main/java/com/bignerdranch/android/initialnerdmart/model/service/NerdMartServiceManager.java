@@ -8,21 +8,26 @@ import com.bignerdranch.android.nerdmartservice.service.payload.Product;
 import java.util.UUID;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
+import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
 public class NerdMartServiceManager {
     private NerdMartServiceInterface mServiceInterface;
     private DataStore mDataStore;
+    private Scheduler mScheduler;
 
     private final Observable.Transformer<Observable, Observable>
             mSchedulersTransformer = observable ->
             observable.subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread());
+                    .observeOn(mScheduler);
 
-    public NerdMartServiceManager(NerdMartServiceInterface serviceInterface, DataStore dataStore) {
+    public NerdMartServiceManager(
+            NerdMartServiceInterface serviceInterface,
+            DataStore dataStore,
+            Scheduler scheduler) {
         mServiceInterface = serviceInterface;
         mDataStore = dataStore;
+        mScheduler = scheduler;
     }
 
     @SuppressWarnings("unchecked")
